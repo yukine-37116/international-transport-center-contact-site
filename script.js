@@ -1,24 +1,10 @@
-// Form validation functions for Zoho CRM integration
+// Form validation functions for EmailJS integration
 // Email validation is now handled by validateEmailFormat() function
 
-function privacyAlert6916395000000627003() {
-  var privacyTool = document.getElementById('privacyTool6916395000000627003');
-  var privacyErr = document.getElementById('privacyErr6916395000000627003');
-  
-  if (privacyTool && !privacyTool.checked) {
-    privacyErr.style.visibility = 'visible';
-    privacyTool.focus();
-    return false;
-  }
-  return true;
-}
-
-function disableErr6916395000000627003() {
-  var privacyErr = document.getElementById('privacyErr6916395000000627003');
-  if (privacyErr) {
-    privacyErr.style.visibility = 'hidden';
-  }
-}
+// EmailJS configuration
+const EMAILJS_SERVICE_ID = 'service_8iag83p';
+const EMAILJS_TEMPLATE_ID = 'template_dpwukoo';
+const EMAILJS_PUBLIC_KEY = 'Is-jFEIBaCUFwfQm1';
 
 // Enhanced phone validation function
 function validatePhoneNumber(phoneValue) {
@@ -71,22 +57,32 @@ function validateEmailFormat(emailValue) {
   return true;
 }
 
-function checkMandatory6916395000000627003() {
+function validateContactForm() {
+  const form = document.getElementById('contact-form');
+  if (!form) return false;
 
-  var mndFileds = ['Last Name', 'Email', 'Phone', 'City', 'Description'];
-  var fldLangVal = ['Name', 'Email', 'Phone', 'POL/POD', 'Commodity Desc. (HS CODE)'];
+  // Required fields mapping
+  const requiredFields = [
+    { name: 'user_name', label: 'Name' },
+    { name: 'user_company', label: 'Company' },
+    { name: 'user_email', label: 'Email' },
+    { name: 'user_phone', label: 'Phone' },
+    { name: 'pol_pod', label: 'POL/POD' },
+    { name: 'commodity_description', label: 'Commodity Description (HS CODE)' }
+  ];
   
-  for (var i = 0; i < mndFileds.length; i++) {
-    var fieldObj = document.forms['WebToLeads6916395000000627003'][mndFileds[i]];
+  // Check all required fields
+  for (var i = 0; i < requiredFields.length; i++) {
+    var fieldObj = form[requiredFields[i].name];
     if (fieldObj && fieldObj.value.trim().length == 0) {
-      alert(fldLangVal[i] + ' cannot be empty.');
+      alert(requiredFields[i].label + ' cannot be empty.');
       fieldObj.focus();
       return false;
     }
   }
   
   // Enhanced email validation
-  var emailField = document.forms['WebToLeads6916395000000627003']['Email'];
+  var emailField = form['user_email'];
   if (emailField && emailField.value.trim().length > 0) {
     if (!validateEmailFormat(emailField.value.trim())) {
       alert('Please enter a valid email address. Examples: user@example.com, john.doe@company.co.uk');
@@ -96,7 +92,7 @@ function checkMandatory6916395000000627003() {
   }
   
   // Enhanced phone validation
-  var phoneField = document.forms['WebToLeads6916395000000627003']['Phone'];
+  var phoneField = form['user_phone'];
   if (phoneField && phoneField.value.trim().length > 0) {
     if (!validatePhoneNumber(phoneField.value.trim())) {
       alert('Please enter a valid phone number. Examples: +84123456789, 0123456789, (012) 345-6789');
@@ -105,23 +101,30 @@ function checkMandatory6916395000000627003() {
     }
   }
   
-  if (!privacyAlert6916395000000627003()) {
-    return false;
-  }
-  
-  // Disable submit button to prevent double submission
-  var submitBtn = document.querySelector('.contact-form button[type=submit]');
-  if (submitBtn) {
-    submitBtn.setAttribute('disabled', true);
-    submitBtn.textContent = 'Submitting...';
-  }
-  
   return true;
 }
 
-// Enhanced form validation with better UX
+// Initialize EmailJS and form
 document.addEventListener('DOMContentLoaded', function() {
-  const form = document.getElementById('webform6916395000000627003');
+  // Wait for EmailJS to load, then initialize
+  function initializeEmailJS() {
+    if (typeof emailjs !== 'undefined' && emailjs.init) {
+      try {
+        emailjs.init(EMAILJS_PUBLIC_KEY);
+        console.log('EmailJS initialized successfully');
+      } catch (error) {
+        console.error('EmailJS initialization error:', error);
+      }
+    } else {
+      // Retry after a short delay if EmailJS hasn't loaded yet
+      setTimeout(initializeEmailJS, 100);
+    }
+  }
+  
+  // Start initialization
+  initializeEmailJS();
+  
+  const form = document.getElementById('contact-form');
   if (!form) return;
   
   // Check if we just returned from a form submission
@@ -297,6 +300,8 @@ window.addEventListener('pageshow', function(event) {
 
 // Global variable to track reCAPTCHA state
 let recaptchaCompleted = false;
+// Set to false to disable reCAPTCHA requirement (useful for testing or if domain is not configured)
+let recaptchaEnabled = false; // Currently disabled due to domain configuration issue
 
 // Function to show reCAPTCHA modal
 function showRecaptchaModal() {
@@ -332,7 +337,6 @@ function checkAndClearAfterSubmission() {
   
   // Check multiple indicators of form submission return
   const hasSubmissionFlag = formSubmitted === 'true';
-  const cameFromZoho = document.referrer && document.referrer.includes('zoho.com');
   const hasRecentSubmission = lastSubmissionTime && (Date.now() - parseInt(lastSubmissionTime)) < 60000; // 1 minute
   
   // Additional checks for Live Server compatibility
@@ -340,7 +344,7 @@ function checkAndClearAfterSubmission() {
   const urlHasSubmissionHint = window.location.href.includes('#submitted') || window.location.search.includes('submitted');
   
 
-  if (hasSubmissionFlag || sessionSubmitted || (cameFromZoho && hasRecentSubmission) || urlHasSubmissionHint) {
+  if (hasSubmissionFlag || sessionSubmitted || hasRecentSubmission || urlHasSubmissionHint) {
 
     clearFormAfterSubmission();
     
@@ -354,19 +358,7 @@ function checkAndClearAfterSubmission() {
       const cleanUrl = window.location.href.replace(/#submitted.*$/, '').replace(/[?&]submitted[^&]*/, '');
       window.history.replaceState({}, document.title, cleanUrl);
     }
-  } else {
-
   }
-  
-  // Also clear if more than 5 minutes have passed since last submission
-  // if (lastSubmissionTime) {
-  //   const timeDiff = Date.now() - parseInt(lastSubmissionTime);
-  //   if (timeDiff > 5 * 60 * 1000) { // 5 minutes
-  //     console.log('Cleaning up old submission flags (>5 minutes)');
-  //     localStorage.removeItem('contactFormSubmitted');
-  //     localStorage.removeItem('contactFormSubmissionTime');
-  //   }
-  // }
 }
 
 // Function to mark form as submitted
@@ -384,7 +376,7 @@ function markFormAsSubmitted() {
 
 // Function to clear form after successful submission
 function clearFormAfterSubmission() {
-  const form = document.getElementById('webform6916395000000627003');
+  const form = document.getElementById('contact-form');
   if (form) {
     // Reset all form fields
     form.reset();
@@ -405,6 +397,90 @@ function clearFormAfterSubmission() {
   }
 }
 
+// Function to send email via EmailJS
+async function sendEmailViaEmailJS(formData) {
+  try {
+    // Check if Public Key is configured
+    if (EMAILJS_PUBLIC_KEY === 'YOUR_PUBLIC_KEY_HERE' || !EMAILJS_PUBLIC_KEY || EMAILJS_PUBLIC_KEY.trim() === '') {
+      throw new Error('EmailJS Public Key is not configured. Please update EMAILJS_PUBLIC_KEY in script.js with your Public Key from https://dashboard.emailjs.com/admin/account');
+    }
+
+    // Check if EmailJS is loaded
+    if (typeof emailjs === 'undefined') {
+      throw new Error('EmailJS library is not loaded. Please check if the script is included in your HTML.');
+    }
+
+    // Ensure EmailJS is initialized
+    if (!emailjs.init) {
+      throw new Error('EmailJS initialization failed. Please check your public key.');
+    }
+
+    // Initialize EmailJS if not already initialized
+    try {
+      emailjs.init(EMAILJS_PUBLIC_KEY);
+    } catch (initError) {
+      // If already initialized, this is fine
+      if (!initError.message.includes('already')) {
+        console.warn('EmailJS init warning:', initError);
+      }
+    }
+
+    // Prepare template parameters
+    const templateParams = {
+      user_name: formData.user_name,
+      user_company: formData.user_company,
+      user_email: formData.user_email,
+      user_phone: formData.user_phone,
+      pol_pod: formData.pol_pod,
+      commodity_description: formData.commodity_description,
+      date: new Date().toLocaleString('en-US', { 
+        year: 'numeric', 
+        month: 'long', 
+        day: 'numeric', 
+        hour: '2-digit', 
+        minute: '2-digit' 
+      })
+    };
+
+    // Add reCAPTCHA response if available
+    if (typeof grecaptcha !== 'undefined') {
+      const recaptchaResponse = grecaptcha.getResponse();
+      if (recaptchaResponse) {
+        templateParams['g-recaptcha-response'] = recaptchaResponse;
+      }
+    }
+
+    console.log('Sending email with EmailJS:', {
+      service: EMAILJS_SERVICE_ID,
+      template: EMAILJS_TEMPLATE_ID,
+      params: templateParams
+    });
+
+    // Send email via EmailJS (using the correct API format)
+    // EmailJS v4 uses: emailjs.send(serviceId, templateId, templateParams, publicKey)
+    const response = await emailjs.send(
+      EMAILJS_SERVICE_ID,
+      EMAILJS_TEMPLATE_ID,
+      templateParams,
+      EMAILJS_PUBLIC_KEY
+    );
+
+    console.log('EmailJS response:', response);
+    return { success: true, response: response };
+  } catch (error) {
+    console.error('EmailJS error details:', {
+      message: error.text || error.message || 'Unknown error',
+      status: error.status || 'N/A',
+      fullError: error
+    });
+    return { 
+      success: false, 
+      error: error,
+      errorMessage: error.text || error.message || 'Failed to send email. Please check your EmailJS configuration.'
+    };
+  }
+}
+
 // Callback function when reCAPTCHA is completed
 function onRecaptchaSuccess() {
   recaptchaCompleted = true;
@@ -419,32 +495,92 @@ function onRecaptchaSuccess() {
     submitBtn.disabled = true;
   }
   
-  // Log the reCAPTCHA response
-  const recaptchaResponse = grecaptcha.getResponse();
+  // Submit the form via EmailJS
+  submitFormViaEmailJS();
+}
+
+// Function to submit form via EmailJS
+async function submitFormViaEmailJS() {
+  const form = document.getElementById('contact-form');
+  if (!form) return;
+
+  // Get form data
+  const formData = {
+    user_name: form.user_name.value.trim(),
+    user_company: form.user_company.value.trim(),
+    user_email: form.user_email.value.trim(),
+    user_phone: form.user_phone.value.trim(),
+    pol_pod: form.pol_pod.value.trim(),
+    commodity_description: form.commodity_description.value.trim()
+  };
+
+  // Send email via EmailJS
+  const result = await sendEmailViaEmailJS(formData);
+
+  const submitBtn = form.querySelector('button[type=submit]');
   
-  // Submit the form
-  const form = document.getElementById('webform6916395000000627003');
-  if (form) {
-    // Mark form as submitted before external redirect
+  if (result.success) {
+    // Success - show message and clear form
+    alert('Thank you! Your inquiry has been submitted successfully. We will get back to you soon.');
     markFormAsSubmitted();
+    clearFormAfterSubmission();
     
-    // Submit the form (will redirect to Zoho then back)
-    form.submit();
+    if (submitBtn) {
+      submitBtn.textContent = 'Submit Inquiry';
+      submitBtn.disabled = false;
+    }
+    
+    // Reset reCAPTCHA
+    recaptchaCompleted = false;
+    if (typeof grecaptcha !== 'undefined') {
+      grecaptcha.reset();
+    }
+  } else {
+    // Error - show detailed error message
+    const errorMsg = result.errorMessage || 
+                     (result.error && result.error.text) || 
+                     (result.error && result.error.message) || 
+                     'Unknown error occurred';
+    
+    console.error('Form submission error:', result.error);
+    
+    // Show user-friendly error message
+    alert('Sorry, there was an error submitting your inquiry.\n\nError: ' + errorMsg + '\n\nPlease check the browser console for more details or contact us directly.');
+    
+    if (submitBtn) {
+      submitBtn.textContent = 'Submit Inquiry';
+      submitBtn.disabled = false;
+    }
+    
+    // Reset reCAPTCHA so user can try again
+    recaptchaCompleted = false;
+    if (typeof grecaptcha !== 'undefined') {
+      grecaptcha.reset();
+    }
   }
 }
 
 // Form submission with reCAPTCHA v2 modal
 document.addEventListener('DOMContentLoaded', function() {
-  const form = document.getElementById('webform6916395000000627003');
+  const form = document.getElementById('contact-form');
   if (!form) return;
   
   form.addEventListener('submit', function(e) {
     e.preventDefault();
     
-    // Let the original validation run first
-    const isValid = checkMandatory6916395000000627003();
+    // Validate form fields
+    const isValid = validateContactForm();
     
     if (!isValid) {
+      return false;
+    }
+    
+    // Check if reCAPTCHA is enabled and available
+    const recaptchaAvailable = typeof grecaptcha !== 'undefined' && recaptchaEnabled;
+    
+    // If reCAPTCHA is not enabled or not available, submit directly
+    if (!recaptchaAvailable) {
+      submitFormViaEmailJS();
       return false;
     }
     
@@ -452,23 +588,25 @@ document.addEventListener('DOMContentLoaded', function() {
     if (recaptchaCompleted) {
       const recaptchaResponse = grecaptcha.getResponse();
       if (recaptchaResponse) {
-        // Mark form as submitted before external redirect
-        markFormAsSubmitted();
-        
-        // Submit the form
-        form.submit();
+        submitFormViaEmailJS();
         return;
       }
     }
     
-    // Show reCAPTCHA modal popup
-    showRecaptchaModal();
-    
-    // Update button text
-    const submitBtn = form.querySelector('button[type=submit]');
-    if (submitBtn) {
-      submitBtn.textContent = 'Complete verification in popup';
-      submitBtn.disabled = true;
+    // Try to show reCAPTCHA modal, but handle errors gracefully
+    try {
+      showRecaptchaModal();
+      
+      // Update button text
+      const submitBtn = form.querySelector('button[type=submit]');
+      if (submitBtn) {
+        submitBtn.textContent = 'Complete verification in popup';
+        submitBtn.disabled = true;
+      }
+    } catch (error) {
+      // If reCAPTCHA fails to load, submit without it
+      console.warn('reCAPTCHA not available, submitting without verification:', error);
+      submitFormViaEmailJS();
     }
     
     return false;

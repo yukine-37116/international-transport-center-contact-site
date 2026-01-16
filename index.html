@@ -72,39 +72,36 @@
           <h2 id="contact-form-heading">Contact Us</h2>
           <p class="form-description">Fill out the form below and we'll get back to you as soon as possible.</p>
 
-          <form id="webform6916395000000627003" 
-                action="https://crm.zoho.com/crm/WebToLeadForm" 
-                name="WebToLeads6916395000000627003" 
-                method="POST" 
-                onsubmit='javascript:document.charset="UTF-8"; return checkMandatory6916395000000627003()' 
-                accept-charset="UTF-8"
+          <form id="contact-form" 
                 role="form"
                 aria-label="Contact form">
 
-            <!-- Hidden Zoho fields -->
-            <input type="hidden" name="xnQsjsdp" value="e49858f3c5497ff9234118fdea645bb039ea76eee25bd0c278b8333193dcf45f">
-            <input type="hidden" name="zc_gad" id="zc_gad" value="">
-            <input type="hidden" name="xmIwtLD" value="c065907136a7f5b58b563e81e959980a8e1cab0fc8a13096aefa4758095bda5aed86f140e15fed652a9fc69d64840b39">
-            <input type="hidden" name="actionType" value="TGVhZHM=">
-            <input type="hidden" name="returnURL" value="https://yukine-37116.github.io/contact-site/">
-
             <!-- Form Fields -->
             <div class="form-group">
-              <label for="Last_Name">Name: <span class="required" aria-label="required">*</span></label>
+              <label for="user_name">Name: <span class="required" aria-label="required">*</span></label>
               <input type="text" 
-                     id="Last_Name" 
-                     name="Last Name" 
+                     id="user_name" 
+                     name="user_name" 
                      required 
                      aria-required="true"
                      placeholder="Enter your full name">
             </div>
 
             <div class="form-group">
-              <label for="Email">Email: <span class="required" aria-label="required">*</span></label>
+              <label for="user_company">Company: <span class="required" aria-label="required">*</span></label>
+              <input type="text" 
+                     id="user_company" 
+                     name="user_company" 
+                     required 
+                     aria-required="true"
+                     placeholder="Enter your company name">
+            </div>
+
+            <div class="form-group">
+              <label for="user_email">Email: <span class="required" aria-label="required">*</span></label>
               <input type="email" 
-                     id="Email" 
-                     name="Email" 
-                     ftype="email" 
+                     id="user_email" 
+                     name="user_email" 
                      pattern="[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}"
                      title="Please enter a valid email address"
                      required 
@@ -113,10 +110,10 @@
             </div>
 
             <div class="form-group">
-              <label for="Phone">Phone: <span class="required" aria-label="required">*</span></label>
+              <label for="user_phone">Phone: <span class="required" aria-label="required">*</span></label>
               <input type="tel" 
-                     id="Phone" 
-                     name="Phone" 
+                     id="user_phone" 
+                     name="user_phone" 
                      required 
                      aria-required="true"
                      placeholder="Enter your phone number"
@@ -125,19 +122,19 @@
             </div>
 
             <div class="form-group">
-              <label for="City">POL/POD: <span class="required" aria-label="required">*</span></label>
+              <label for="pol_pod">POL/POD: <span class="required" aria-label="required">*</span></label>
               <input type="text" 
-                     id="City" 
-                     name="Annual City" 
+                     id="pol_pod" 
+                     name="pol_pod" 
                      required 
                      aria-required="true"
                      placeholder="Port of Loading / Port of Discharge">
             </div>
 
             <div class="form-group">
-              <label for="Description">Commodity Description (HS CODE): <span class="required" aria-label="required">*</span></label>
-              <textarea id="Description" 
-                        name="Description" 
+              <label for="commodity_description">Commodity Description (HS CODE): <span class="required" aria-label="required">*</span></label>
+              <textarea id="commodity_description" 
+                        name="commodity_description" 
                         required 
                         aria-required="true"
                         placeholder="Describe your commodity and include HS code if available"
@@ -241,6 +238,7 @@
   </div>
 
   <!-- External JavaScript -->
+  <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
   <script src="script.js"></script>
   <script src="https://www.google.com/recaptcha/api.js" async defer></script>
 </body>
