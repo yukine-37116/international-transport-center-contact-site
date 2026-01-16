@@ -1,6 +1,202 @@
 // Form validation functions for EmailJS integration
 // Email validation is now handled by validateEmailFormat() function
 
+// ==================== BILINGUAL SUPPORT (EN/VI) ====================
+// Translation objects
+const translations = {
+  en: {
+    hero: {
+      title: 'Ratraco International Transport Center',
+      subtitle: 'Fast - Safe - Green - Efficient Transport'
+    },
+    table: {
+      name: 'Name',
+      phone: 'Phone',
+      email: 'Email',
+      zalo: 'Zalo',
+      zaloLink: 'Zalo Link'
+    },
+    form: {
+      title: 'Contact Us',
+      description: 'Fill out the form below and we\'ll get back to you as soon as possible.',
+      name: 'Name:',
+      namePlaceholder: 'Enter your full name',
+      company: 'Company:',
+      companyPlaceholder: 'Enter your company name',
+      email: 'Email:',
+      emailPlaceholder: 'Enter your email address',
+      emailTitle: 'Please enter a valid email address',
+      phone: 'Phone:',
+      phonePlaceholder: 'Enter your phone number',
+      phoneTitle: 'Please enter a valid phone number (minimum 10 digits)',
+      polPod: 'POL/POD:',
+      polPodPlaceholder: 'Port of Loading / Port of Discharge',
+      commodity: 'Commodity Description (HS CODE):',
+      commodityPlaceholder: 'Describe your commodity and include HS code if available',
+      submit: 'Submit Inquiry',
+      submitting: 'Submitting...',
+      completeVerification: 'Complete verification in popup'
+    },
+    validation: {
+      nameEmpty: 'Name cannot be empty.',
+      companyEmpty: 'Company cannot be empty.',
+      emailEmpty: 'Email cannot be empty.',
+      phoneEmpty: 'Phone cannot be empty.',
+      polPodEmpty: 'POL/POD cannot be empty.',
+      commodityEmpty: 'Commodity Description (HS CODE) cannot be empty.',
+      emailInvalid: 'Please enter a valid email address. Examples: user@example.com, john.doe@company.co.uk',
+      phoneInvalid: 'Please enter a valid phone number. Examples: +84123456789, 0123456789, (012) 345-6789'
+    },
+    messages: {
+      success: 'Thank you! Your inquiry has been submitted successfully. We will get back to you soon.',
+      error: 'Sorry, there was an error submitting your inquiry. Please try again or contact us directly.',
+      errorDetails: 'Sorry, there was an error submitting your inquiry.\n\nError: {error}\n\nPlease check the browser console for more details or contact us directly.'
+    },
+    recaptcha: {
+      title: 'Security Verification'
+    },
+    footer: {
+      address: '4th floor, 118 Le Duan Street, Van Mieu - Quoc Tu Giam Ward, Hanoi, Vietnam.',
+      webmail: 'Webmail',
+      contact: 'Contact',
+      copyright: '2015 Ratraco. All rights reserved.'
+    }
+  },
+  vi: {
+    hero: {
+      title: 'Trung Tâm Vận Tải Quốc Tế Ratraco',
+      subtitle: 'Vận Tải Nhanh - An Toàn - Xanh - Hiệu Quả'
+    },
+    table: {
+      name: 'Tên',
+      phone: 'Điện thoại',
+      email: 'Email',
+      zalo: 'Zalo',
+      zaloLink: 'Liên kết Zalo'
+    },
+    form: {
+      title: 'Liên Hệ',
+      description: 'Điền vào biểu mẫu bên dưới và chúng tôi sẽ liên hệ lại với bạn sớm nhất có thể.',
+      name: 'Tên:',
+      namePlaceholder: 'Nhập họ và tên của bạn',
+      company: 'Công ty:',
+      companyPlaceholder: 'Nhập tên công ty của bạn',
+      email: 'Email:',
+      emailPlaceholder: 'Nhập địa chỉ email của bạn',
+      emailTitle: 'Vui lòng nhập địa chỉ email hợp lệ',
+      phone: 'Điện thoại:',
+      phonePlaceholder: 'Nhập số điện thoại của bạn',
+      phoneTitle: 'Vui lòng nhập số điện thoại hợp lệ (tối thiểu 10 chữ số)',
+      polPod: 'POL/POD:',
+      polPodPlaceholder: 'Cảng Xếp Hàng / Cảng Dỡ Hàng',
+      commodity: 'Mô Tả Hàng Hóa (Mã HS):',
+      commodityPlaceholder: 'Mô tả hàng hóa của bạn và bao gồm mã HS nếu có',
+      submit: 'Gửi Yêu Cầu',
+      submitting: 'Đang gửi...',
+      completeVerification: 'Hoàn tất xác minh trong cửa sổ popup'
+    },
+    validation: {
+      nameEmpty: 'Tên không được để trống.',
+      companyEmpty: 'Công ty không được để trống.',
+      emailEmpty: 'Email không được để trống.',
+      phoneEmpty: 'Điện thoại không được để trống.',
+      polPodEmpty: 'POL/POD không được để trống.',
+      commodityEmpty: 'Mô Tả Hàng Hóa (Mã HS) không được để trống.',
+      emailInvalid: 'Vui lòng nhập địa chỉ email hợp lệ. Ví dụ: user@example.com, john.doe@company.co.uk',
+      phoneInvalid: 'Vui lòng nhập số điện thoại hợp lệ. Ví dụ: +84123456789, 0123456789, (012) 345-6789'
+    },
+    messages: {
+      success: 'Cảm ơn bạn! Yêu cầu của bạn đã được gửi thành công. Chúng tôi sẽ liên hệ lại với bạn sớm nhất có thể.',
+      error: 'Xin lỗi, đã có lỗi xảy ra khi gửi yêu cầu của bạn. Vui lòng thử lại hoặc liên hệ trực tiếp với chúng tôi.',
+      errorDetails: 'Xin lỗi, đã có lỗi xảy ra khi gửi yêu cầu của bạn.\n\nLỗi: {error}\n\nVui lòng kiểm tra bảng điều khiển trình duyệt để biết thêm chi tiết hoặc liên hệ trực tiếp với chúng tôi.'
+    },
+    recaptcha: {
+      title: 'Xác Minh Bảo Mật'
+    },
+    footer: {
+      address: 'Số 118 Lê Duẩn, Phường Văn Miếu - Quốc Tử Giám, TP. Hà Nội, Việt Nam.',
+      webmail: 'Webmail',
+      contact: 'Liên Hệ',
+      copyright: '2015 Ratraco. All rights reserved.'
+    }
+  }
+};
+
+// Current language (default: English)
+let currentLang = localStorage.getItem('preferredLanguage') || 'en';
+
+// Function to get nested translation value
+function getTranslation(key, lang = currentLang) {
+  const keys = key.split('.');
+  let value = translations[lang];
+  for (const k of keys) {
+    value = value?.[k];
+  }
+  return value || key;
+}
+
+// Function to translate the page
+function translatePage(lang) {
+  currentLang = lang;
+  localStorage.setItem('preferredLanguage', lang);
+  document.documentElement.lang = lang;
+
+  // Update all elements with data-i18n attribute
+  document.querySelectorAll('[data-i18n]').forEach(element => {
+    const key = element.getAttribute('data-i18n');
+    const translation = getTranslation(key, lang);
+    if (element.tagName === 'INPUT' || element.tagName === 'TEXTAREA') {
+      // For input/textarea, update placeholder if it has data-i18n-placeholder
+      const placeholderKey = element.getAttribute('data-i18n-placeholder');
+      if (placeholderKey) {
+        element.placeholder = getTranslation(placeholderKey, lang);
+      }
+      // Update title attribute if it has data-i18n-title
+      const titleKey = element.getAttribute('data-i18n-title');
+      if (titleKey) {
+        element.title = getTranslation(titleKey, lang);
+      }
+    } else {
+      // For other elements, update text content but preserve HTML structure
+      if (element.innerHTML.includes('<span') || element.innerHTML.includes('*')) {
+        // Preserve required asterisk
+        const requiredSpan = element.querySelector('.required');
+        element.innerHTML = translation;
+        if (requiredSpan) {
+          element.appendChild(requiredSpan);
+        }
+      } else {
+        element.textContent = translation;
+      }
+    }
+  });
+
+  // Update language switcher buttons
+  document.querySelectorAll('.lang-btn').forEach(btn => {
+    if (btn.getAttribute('data-lang') === lang) {
+      btn.classList.add('active');
+    } else {
+      btn.classList.remove('active');
+    }
+  });
+}
+
+// Initialize language on page load
+document.addEventListener('DOMContentLoaded', function() {
+  translatePage(currentLang);
+
+  // Add click handlers to language switcher buttons
+  document.querySelectorAll('.lang-btn').forEach(btn => {
+    btn.addEventListener('click', function() {
+      const lang = this.getAttribute('data-lang');
+      translatePage(lang);
+      // Reload page after language change
+      window.location.reload();
+    });
+  });
+});
+// ==================== END BILINGUAL SUPPORT ====================
+
 // EmailJS configuration
 const EMAILJS_SERVICE_ID = 'service_8iag83p';
 const EMAILJS_TEMPLATE_ID = 'template_dpwukoo';
@@ -61,21 +257,21 @@ function validateContactForm() {
   const form = document.getElementById('contact-form');
   if (!form) return false;
 
-  // Required fields mapping
+  // Required fields mapping with translation keys
   const requiredFields = [
-    { name: 'user_name', label: 'Name' },
-    { name: 'user_company', label: 'Company' },
-    { name: 'user_email', label: 'Email' },
-    { name: 'user_phone', label: 'Phone' },
-    { name: 'pol_pod', label: 'POL/POD' },
-    { name: 'commodity_description', label: 'Commodity Description (HS CODE)' }
+    { name: 'user_name', key: 'validation.nameEmpty' },
+    { name: 'user_company', key: 'validation.companyEmpty' },
+    { name: 'user_email', key: 'validation.emailEmpty' },
+    { name: 'user_phone', key: 'validation.phoneEmpty' },
+    { name: 'pol_pod', key: 'validation.polPodEmpty' },
+    { name: 'commodity_description', key: 'validation.commodityEmpty' }
   ];
   
   // Check all required fields
   for (var i = 0; i < requiredFields.length; i++) {
     var fieldObj = form[requiredFields[i].name];
     if (fieldObj && fieldObj.value.trim().length == 0) {
-      alert(requiredFields[i].label + ' cannot be empty.');
+      alert(getTranslation(requiredFields[i].key));
       fieldObj.focus();
       return false;
     }
@@ -85,7 +281,7 @@ function validateContactForm() {
   var emailField = form['user_email'];
   if (emailField && emailField.value.trim().length > 0) {
     if (!validateEmailFormat(emailField.value.trim())) {
-      alert('Please enter a valid email address. Examples: user@example.com, john.doe@company.co.uk');
+      alert(getTranslation('validation.emailInvalid'));
       emailField.focus();
       return false;
     }
@@ -95,7 +291,7 @@ function validateContactForm() {
   var phoneField = form['user_phone'];
   if (phoneField && phoneField.value.trim().length > 0) {
     if (!validatePhoneNumber(phoneField.value.trim())) {
-      alert('Please enter a valid phone number. Examples: +84123456789, 0123456789, (012) 345-6789');
+      alert(getTranslation('validation.phoneInvalid'));
       phoneField.focus();
       return false;
     }
@@ -323,7 +519,7 @@ function closeRecaptchaModal() {
   // Reset submit button
   const submitBtn = document.querySelector('.submit-btn');
   if (submitBtn) {
-    submitBtn.textContent = 'Submit Inquiry';
+    submitBtn.textContent = getTranslation('form.submit');
     submitBtn.disabled = false;
   }
 }
@@ -384,7 +580,7 @@ function clearFormAfterSubmission() {
     // Reset submit button state
     const submitBtn = form.querySelector('button[type=submit]');
     if (submitBtn) {
-      submitBtn.textContent = 'Submit Inquiry';
+      submitBtn.textContent = getTranslation('form.submit');
       submitBtn.disabled = false;
     }
     
@@ -491,7 +687,7 @@ function onRecaptchaSuccess() {
   // Auto-submit the form after reCAPTCHA is completed
   const submitBtn = document.querySelector('.submit-btn');
   if (submitBtn) {
-    submitBtn.textContent = 'Submitting...';
+    submitBtn.textContent = getTranslation('form.submitting');
     submitBtn.disabled = true;
   }
   
@@ -521,12 +717,12 @@ async function submitFormViaEmailJS() {
   
   if (result.success) {
     // Success - show message and clear form
-    alert('Thank you! Your inquiry has been submitted successfully. We will get back to you soon.');
+    alert(getTranslation('messages.success'));
     markFormAsSubmitted();
     clearFormAfterSubmission();
     
     if (submitBtn) {
-      submitBtn.textContent = 'Submit Inquiry';
+      submitBtn.textContent = getTranslation('form.submit');
       submitBtn.disabled = false;
     }
     
@@ -544,11 +740,12 @@ async function submitFormViaEmailJS() {
     
     console.error('Form submission error:', result.error);
     
-    // Show user-friendly error message
-    alert('Sorry, there was an error submitting your inquiry.\n\nError: ' + errorMsg + '\n\nPlease check the browser console for more details or contact us directly.');
+    // Show user-friendly error message with translation
+    const errorMessage = getTranslation('messages.errorDetails').replace('{error}', errorMsg);
+    alert(errorMessage);
     
     if (submitBtn) {
-      submitBtn.textContent = 'Submit Inquiry';
+      submitBtn.textContent = getTranslation('form.submit');
       submitBtn.disabled = false;
     }
     
@@ -600,7 +797,7 @@ document.addEventListener('DOMContentLoaded', function() {
       // Update button text
       const submitBtn = form.querySelector('button[type=submit]');
       if (submitBtn) {
-        submitBtn.textContent = 'Complete verification in popup';
+        submitBtn.textContent = getTranslation('form.completeVerification');
         submitBtn.disabled = true;
       }
     } catch (error) {

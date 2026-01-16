@@ -37,14 +37,82 @@ header {
   background-color: #0E2A87;
   padding: 15px 30px;
   color: white;
+  position: relative;
+}
+
+header .container {
   display: flex;
   justify-content: center;
   align-items: center;
+  max-width: 1200px;
+  margin: 0 auto;
+  width: 100%;
+  position: relative;
+}
+
+header .logo {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex: 1;
+}
+
+header .logo img {
+  height: 50px;
 }
 
 header img {
   height: 50px;
-  margin-right: 15px;
+}
+
+/* Language Switcher */
+.language-switcher {
+  display: flex;
+  gap: 5px;
+  position: absolute;
+  right: 30px;
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+.lang-btn {
+  background-color: transparent;
+  border: none;
+  color: white;
+  padding: 0;
+  border-radius: 4px;
+  cursor: pointer;
+  font-weight: 600;
+  transition: all 0.3s ease;
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+
+.lang-btn .flag-icon {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  border-radius: 2px;
+}
+
+.lang-btn:hover {
+  transform: scale(1.1);
+  opacity: 0.9;
+}
+
+.lang-btn.active {
+  box-shadow: 0 0 8px rgba(230, 126, 34, 0.6);
+  transform: scale(1.05);
+}
+
+.lang-btn.active:hover {
+  background-color: #cc580f;
+  border-color: #cc580f;
 }
 
 /* Hero Section */
@@ -553,6 +621,26 @@ h1, h2 {
 }
 
 @media (max-width: 768px) {
+  header {
+    padding: 10px 15px;
+  }
+  
+  header .container {
+    position: relative;
+  }
+  
+  .language-switcher {
+    position: absolute;
+    right: 15px;
+    top: 50%;
+    transform: translateY(-50%);
+  }
+  
+  header .logo {
+    width: 100%;
+    text-align: center;
+  }
+  
   .page-title {
     font-size: 2rem;
     margin: 20px 0 8px;

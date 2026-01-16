@@ -23,6 +23,14 @@
           <img src="ratraco.png" alt="Ratraco Logo" style="height:60px;">
         </a>
       </div>
+      <div class="language-switcher">
+        <button id="lang-en" class="lang-btn active" data-lang="en" aria-label="English" title="English">
+          <img src="UK_flag.svg" alt="English" class="flag-icon">
+        </button>
+        <button id="lang-vi" class="lang-btn" data-lang="vi" aria-label="Tiếng Việt" title="Tiếng Việt">
+          <img src="VN_flag.svg" alt="Tiếng Việt" class="flag-icon">
+        </button>
+      </div>
     </div>
   </header>
 
@@ -30,8 +38,8 @@
   <main role="main">
     <!-- Hero Section -->
     <section class="hero-section">
-      <h1 class="page-title">Ratraco International Transport Center</h1>
-      <p class="subtitle">Fast - Safe - Green - Efficient Transport</p>
+      <h1 class="page-title" data-i18n="hero.title">Ratraco International Transport Center</h1>
+      <p class="subtitle" data-i18n="hero.subtitle">Fast - Safe - Green - Efficient Transport</p>
     </section>
 
     <!-- Contact Information Section -->
@@ -41,10 +49,10 @@
         <table class="contact-table" role="table" aria-label="Contact Information">
           <thead>
             <tr>
-              <th scope="col">Name</th>
-              <th scope="col">Phone</th>
-              <th scope="col">Email</th>
-              <th scope="col">Zalo</th>
+              <th scope="col" data-i18n="table.name">Name</th>
+              <th scope="col" data-i18n="table.phone">Phone</th>
+              <th scope="col" data-i18n="table.email">Email</th>
+              <th scope="col" data-i18n="table.zalo">Zalo</th>
             </tr>
           </thead>
           <tbody>
@@ -52,13 +60,13 @@
               <td>Nguyen Duy Kien</td>
               <td><a href="tel:0834505518" aria-label="Call Nguyen Duy Kien">0834505518</a></td>
               <td><a href="mailto:kiennd@ratraco.com.vn" aria-label="Email Nguyen Duy Kien">kiennd@ratraco.com.vn</a></td>
-              <td><a href="https://zalo.me/0834505518" target="_blank" rel="noopener noreferrer" aria-label="Contact Nguyen Duy Kien on Zalo">Zalo Link</a></td>
+              <td><a href="https://zalo.me/0834505518" target="_blank" rel="noopener noreferrer" aria-label="Contact Nguyen Duy Kien on Zalo" data-i18n="table.zaloLink">Zalo Link</a></td>
             </tr>
             <tr>
               <td>Bui Xuan Hung</td>
               <td><a href="tel:0901761112" aria-label="Call Bui Xuan Hung">0901761112</a></td>
               <td><a href="mailto:hungbx@ratraco.com.vn" aria-label="Email Bui Xuan Hung">hungbx@ratraco.com.vn</a></td>
-              <td><a href="https://zalo.me/0901761112" target="_blank" rel="noopener noreferrer" aria-label="Contact Bui Xuan Hung on Zalo">Zalo Link</a></td>
+              <td><a href="https://zalo.me/0901761112" target="_blank" rel="noopener noreferrer" aria-label="Contact Bui Xuan Hung on Zalo" data-i18n="table.zaloLink">Zalo Link</a></td>
             </tr>
           </tbody>
         </table>
@@ -69,8 +77,8 @@
     <section class="contact-form-section" aria-labelledby="contact-form-heading">
       <div class="contact-section">
         <div class="contact-form">
-          <h2 id="contact-form-heading">Contact Us</h2>
-          <p class="form-description">Fill out the form below and we'll get back to you as soon as possible.</p>
+          <h2 id="contact-form-heading" data-i18n="form.title">Contact Us</h2>
+          <p class="form-description" data-i18n="form.description">Fill out the form below and we'll get back to you as soon as possible.</p>
 
           <form id="contact-form" 
                 role="form"
@@ -78,71 +86,79 @@
 
             <!-- Form Fields -->
             <div class="form-group">
-              <label for="user_name">Name: <span class="required" aria-label="required">*</span></label>
+              <label for="user_name" data-i18n="form.name">Name: <span class="required" aria-label="required">*</span></label>
               <input type="text" 
                      id="user_name" 
                      name="user_name" 
                      required 
                      aria-required="true"
+                     data-i18n-placeholder="form.namePlaceholder"
                      placeholder="Enter your full name">
             </div>
 
             <div class="form-group">
-              <label for="user_company">Company: <span class="required" aria-label="required">*</span></label>
+              <label for="user_company" data-i18n="form.company">Company: <span class="required" aria-label="required">*</span></label>
               <input type="text" 
                      id="user_company" 
                      name="user_company" 
                      required 
                      aria-required="true"
+                     data-i18n-placeholder="form.companyPlaceholder"
                      placeholder="Enter your company name">
             </div>
 
             <div class="form-group">
-              <label for="user_email">Email: <span class="required" aria-label="required">*</span></label>
+              <label for="user_email" data-i18n="form.email">Email: <span class="required" aria-label="required">*</span></label>
               <input type="email" 
                      id="user_email" 
                      name="user_email" 
                      pattern="[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}"
+                     data-i18n-title="form.emailTitle"
                      title="Please enter a valid email address"
                      required 
                      aria-required="true"
+                     data-i18n-placeholder="form.emailPlaceholder"
                      placeholder="Enter your email address">
             </div>
 
             <div class="form-group">
-              <label for="user_phone">Phone: <span class="required" aria-label="required">*</span></label>
+              <label for="user_phone" data-i18n="form.phone">Phone: <span class="required" aria-label="required">*</span></label>
               <input type="tel" 
                      id="user_phone" 
                      name="user_phone" 
                      required 
                      aria-required="true"
+                     data-i18n-placeholder="form.phonePlaceholder"
                      placeholder="Enter your phone number"
                      pattern="[\+]?[0-9\s\-\(\)]{10,}"
+                     data-i18n-title="form.phoneTitle"
                      title="Please enter a valid phone number (minimum 10 digits)">
             </div>
 
             <div class="form-group">
-              <label for="pol_pod">POL/POD: <span class="required" aria-label="required">*</span></label>
+              <label for="pol_pod" data-i18n="form.polPod">POL/POD: <span class="required" aria-label="required">*</span></label>
               <input type="text" 
                      id="pol_pod" 
                      name="pol_pod" 
                      required 
                      aria-required="true"
+                     data-i18n-placeholder="form.polPodPlaceholder"
                      placeholder="Port of Loading / Port of Discharge">
             </div>
 
             <div class="form-group">
-              <label for="commodity_description">Commodity Description (HS CODE): <span class="required" aria-label="required">*</span></label>
+              <label for="commodity_description" data-i18n="form.commodity">Commodity Description (HS CODE): <span class="required" aria-label="required">*</span></label>
               <textarea id="commodity_description" 
                         name="commodity_description" 
                         required 
                         aria-required="true"
+                        data-i18n-placeholder="form.commodityPlaceholder"
                         placeholder="Describe your commodity and include HS code if available"
                         rows="4"></textarea>
             </div>
 
 
-            <button type="submit" class="submit-btn">
+            <button type="submit" class="submit-btn" data-i18n="form.submit">
               Submit Inquiry
             </button>
           </form>
@@ -179,14 +195,14 @@
     <div class="footer-info">
       <p>
         <i class="fa-solid fa-location-dot" style="color:orange;" aria-hidden="true"></i>
-        4th floor, 118 Le Duan Street, Van Mieu - Quoc Tu Giam Ward, Hanoi, Vietnam.
+        <span data-i18n="footer.address">4th floor, 118 Le Duan Street, Van Mieu - Quoc Tu Giam Ward, Hanoi, Vietnam.</span>
       </p>
 
       <div class="footer-columns">
         <div class="col">
           <p>
             <i class="fa-solid fa-phone" style="color:orange;" aria-hidden="true"></i> 
-            <a href="tel:084906280199" aria-label="Call our main phone number">(084) 906 280 199</a>
+            <a href="tel:084906280199" aria-label="Call our main phone number">(+84) 906 280 199</a>
           </p>
           <p>
             <i class="fa-solid fa-envelope" style="color:orange;" aria-hidden="true"></i> 
@@ -197,7 +213,7 @@
         <div class="col">
           <p>
             <i class="fa-solid fa-fax" style="color:orange;" aria-hidden="true"></i> 
-            <a href="tel:084906280199" aria-label="Fax number">(084) 906 280 199</a>
+            <a href="tel:084906280199" aria-label="Fax number">(+84) 24 3822 1716</a>
           </p>
           <p>
             <i class="fa-solid fa-link" style="color:orange;" aria-hidden="true"></i>
@@ -209,8 +225,8 @@
 
     <div class="footer-right">
       <p>
-        <a href="#" aria-label="Access webmail">Webmail</a> | 
-        <a href="#contact-form-heading" aria-label="Contact us">Liên hệ</a>
+        <a href="#" aria-label="Access webmail" data-i18n="footer.webmail">Webmail</a> | 
+        <a href="#contact-form-heading" aria-label="Contact us" data-i18n="footer.contact">Contact</a>
       </p>
       <p class="social" aria-label="Follow us on social media">
         <a href="#" aria-label="Follow us on YouTube"><i class="fa-brands fa-youtube"></i></a>
@@ -219,7 +235,7 @@
         <a href="#" aria-label="Follow us on Twitter"><i class="fa-brands fa-twitter"></i></a>
         <a href="#" aria-label="Follow us on Instagram"><i class="fa-brands fa-instagram"></i></a>
       </p>
-      <div class="footer-bottom">2015 Ratraco. All rights reserved.</div>
+      <div class="footer-bottom" data-i18n="footer.copyright">2015 Ratraco. All rights reserved.</div>
     </div>
   </footer>
 
@@ -228,7 +244,7 @@
     <div class="recaptcha-backdrop"></div>
     <div class="recaptcha-popup">
       <div class="recaptcha-header">
-        <h3>Security Verification</h3>
+        <h3 data-i18n="recaptcha.title">Security Verification</h3>
         <button type="button" class="recaptcha-close" onclick="closeRecaptchaModal()">&times;</button>
       </div>
       <div class="recaptcha-body">
